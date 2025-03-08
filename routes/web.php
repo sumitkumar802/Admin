@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationSuccessMail;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,4 +28,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // google register
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+// for testing purpoe
+Route::get('/test-mail', function () {
+    $user = User::find(24);
+    Mail::to($user->email)->send(new RegistrationSuccessMail($user));
+    return 'Email sent!';
+});
 require __DIR__.'/auth.php';
