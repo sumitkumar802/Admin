@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,20 +15,19 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'is_active'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::post('/admin/activate-user/{user}', [AdminController::class, 'activateUser']);
-});
+
 
 // google register
-Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.register');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
 
 // for testing purpoe
 Route::get('/test-mail', function () {
@@ -35,4 +35,16 @@ Route::get('/test-mail', function () {
     Mail::to($user->email)->send(new RegistrationSuccessMail($user));
     return 'Email sent!';
 });
+
 require __DIR__.'/auth.php';
+
+// admin routes
+Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'superAdminDashboard'])->name('dashboard');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
+    Route::resource('/users', UserController::class);
+});

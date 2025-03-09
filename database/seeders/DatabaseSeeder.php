@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
             'password' => bcrypt('123'),
+            'role' => 'superadmin'
         ]);
         $superAdmin->assignRole('superadmin');
     
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('123'),
+            'role' => 'admin'
         ]);
         $admin->assignRole('admin');
     

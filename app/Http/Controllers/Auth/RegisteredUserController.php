@@ -31,24 +31,33 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-        // dd($user->email);
+        DB::beginTransaction();
         try {
-            Mail::to($user->email)->send(new RegistrationSuccessMail($user));
-            Log::info("✅ Email sent successfully to {$user->email}");
-        } catch (\Exception $e) {
-            Log::error("❌ Failed to send email: " . $e->getMessage());
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_active' => 0,
+                'role' => 'user',
+            ]);
+
+            event(new Registered($user));
+
+            // Auth::login($user);
+            try {
+                Mail::to($user->email)->send(new RegistrationSuccessMail($user));
+                Log::info("✅ Email sent successfully to {$user->email}");
+            } catch (\Exception $e) {
+                Log::error("❌ Failed to send email: " . $e->getMessage());
+            }
+            DB::commit();
+            Auth::logout();
+            // SendRegistrationSuccessEmail::dispatch($user);
+            return redirect('/login')->with('success', 'Your account has been created but needs admin approval.');
+        }catch (\Exception $e){
+            DB::rollBack();
+            Log::error("❌ User registration failed: ".$e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Something went wrong, please try again.']);
         }
-        // SendRegistrationSuccessEmail::dispatch($user);
-        return redirect(route('dashboard', absolute: false));
     }
 }

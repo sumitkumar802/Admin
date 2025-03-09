@@ -51,7 +51,7 @@
         </div>
         <!-- Register with Google -->
         <div class="mt-6 flex justify-center">
-            <a href="{{ route('google.login') }}"
+            <a href="{{ route('google.register') }}"
                 class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="w-5 h-5">
                 <span>Register with Google</span>

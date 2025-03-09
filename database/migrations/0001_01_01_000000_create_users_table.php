@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('google_id')->nullable();
             $table->string('profile_picture')->nullable();
+            $table->string('role')->default('user');
             $table->boolean('is_active')->default(false);
             $table->rememberToken();
             $table->timestamps();

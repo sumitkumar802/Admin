@@ -12,10 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
-        $middleware->alias([
-            'active' => \App\Http\Middleware\EnsureUserIsActive::class,
+        $middleware->append([
+            // \App\Http\Middleware\Admin\RolesMiddleware::class,  
         ]);
+        $middleware->alias([
+            'is_active' => \App\Http\Middleware\EnsureUserIsActive::class,
+            'role' => \App\Http\Middleware\Admin\RolesMiddleware::class,
+
+        ]);
+  
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
