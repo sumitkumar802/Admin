@@ -21,7 +21,10 @@ class DashboardController extends Controller
     public function UserList()
     {
         $users = User::where('role','user')->get();
-        // dd($user);
+        // echo "<pre>";
+        // print_r( $users);
+        // exit();
+        // dd($users);
         return view('admin.tables',['users'=>$users]);
     }
 }

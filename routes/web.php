@@ -8,10 +8,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationSuccessMail;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\WelcomeController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/about', [WelcomeController::class, 'about'])->name('about');
+Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact');
+Route::get('/services', [WelcomeController::class, 'services'])->name('services');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

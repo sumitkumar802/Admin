@@ -26,6 +26,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                    @foreach($users as $user)
                 <tr>
                     <td>
                     <div class="d-flex px-2 py-1">
@@ -33,48 +34,25 @@
                         <img src="{{ asset('admin/img/team-2.jpg') }}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">John Michael</h6>
-                        <p class="text-xs text-secondary mb-0"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="472d282f290724352226332e31226a332e2a6924282a">[email&#160;protected]</a></p>
+                        <h6 class="mb-0 text-sm">{{$user->name}}</h6>
+                        <p class="text-xs text-secondary mb-0">{{$user->email}}</p>
                         </div>
                     </div>
                     </td>
                     <td>
-                    <p class="text-xs font-weight-bold mb-0">Manager</p>
-                    <p class="text-xs text-secondary mb-0">Organization</p>
+                    <p class="text-xs font-weight-bold mb-0">{{$user->role}}</p>
+                    <p class="text-xs text-secondary mb-0"><?php if($user->google_id===null){ echo ""; }else{ echo "Google Login"; } ?></p>
                     </td>
                     <td class="align-middle text-center text-sm">
-                    <span class="badge badge-sm bg-gradient-success">Online</span>
+                        @if($user->is_active!==0)
+                        <span class="badge badge-sm bg-gradient-success">Active</span>
+                        @else
+                        <span class="badge badge-sm bg-gradient-secondary">InActive</span>
+                        @endif
+
                     </td>
                     <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                    </td>
-                    <td class="align-middle">
-                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                        Edit
-                    </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    <div class="d-flex px-2 py-1">
-                        <div>
-                        <img src="{{ asset('admin/img/team-3.jpg') }}" class="avatar avatar-sm me-3 border-radius-lg" alt="user2">
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Alexa Liras</h6>
-                        <p class="text-xs text-secondary mb-0"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2a3aea7baa382a1b0a7a3b6abb4a7efb6abafeca1adaf">[email&#160;protected]</a></p>
-                        </div>
-                    </div>
-                    </td>
-                    <td>
-                    <p class="text-xs font-weight-bold mb-0">Programator</p>
-                    <p class="text-xs text-secondary mb-0">Developer</p>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                    <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                    </td>
-                    <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold">11/01/19</span>
+                    <span class="text-secondary text-xs font-weight-bold">{{$user->created_at}}</span>
                     </td>
                     <td class="align-middle">
                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
@@ -83,6 +61,7 @@
                     </td>
                 </tr>
 
+                @endforeach
                 </tbody>
             </table>
             </div>
