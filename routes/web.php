@@ -46,5 +46,5 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
-    Route::resource('/users', UserController::class);
+    Route::get('/UserList', [DashboardController::class, 'UserList'])->name('UserList');
 });
