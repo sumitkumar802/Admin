@@ -8,12 +8,12 @@ class WelcomeController extends Controller
 {
     
     public function about(){
-        return view('about');
+        return view('landing.about');
     }
     public function services(){
-        return view('services');
+        return view('landing.services');
     }
     public function contact(){
-        return view('contact');
+        return view('landing.contact');
     }
 }
